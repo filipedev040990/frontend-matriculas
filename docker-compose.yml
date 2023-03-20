@@ -1,0 +1,12 @@
+version: '3.5'
+
+services:
+  webserver:
+    container_name: 'webserver'
+    image: httpd:latest
+    restart: always
+    working_dir: /app
+    ports:
+      - 8080:80
+    volumes:
+      - ./src/:/usr/local/apache2/htdocs
