@@ -53,9 +53,9 @@ async function advanceToStep2 () {
     }
     
     const response = await fetch(url, options)
+    const responseMessage = await response.json()
 
-    if(response.status !== 204) {
-        const responseMessage = await response.json()
+    if(response.status !== 200) {
         let toastrMessage = ''
 
         if(responseMessage.includes('Invalid param')) {
@@ -79,8 +79,7 @@ async function advanceToStep2 () {
     $('#name').val('')
 
     $('#payment_person_email').val(email)
-    $('#payment_person_email').attr('readonly', true)
-
+    $('#lead_external_code').val(responseMessage.external_code)
     $('#step2-tab').attr('href', '#step2')
     $('#step2-tab').tab('show')
     
@@ -93,6 +92,7 @@ function setDocumentType (personType) {
 }
 
 async function advanceToStep3() {
+    const lead_external_code        = $('#lead_external_code').val().trim()
     const payment_person_type       = $('#payment_person_type').val().trim()
     const payment_person_name       = $('#payment_person_name').val().trim()
     const payment_person_email      = $('#payment_person_email').val().trim()
@@ -137,6 +137,11 @@ async function advanceToStep3() {
         return false
     }
 
+    if(!lead_external_code || lead_external_code == '') {
+        toastr.error('Erro interno do servidor. Tente novamente em alguns instantes')
+        return false
+    }
+
     const url = 'http://localhost:3001/api/payments'
     const options = {
         method: 'POST',
@@ -145,6 +150,7 @@ async function advanceToStep3() {
             'Content-Type': 'application/json'
           },
         body: JSON.stringify({
+            lead_external_code,
             name: payment_person_name,
             person_type: payment_person_type,
             email: payment_person_email,
@@ -187,5 +193,5 @@ async function advanceToStep3() {
 
     setTimeout(() => {
         window.location.reload()
-    }, 3000)
+    }, 3500)
 }

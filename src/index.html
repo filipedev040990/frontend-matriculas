@@ -42,6 +42,7 @@
                 <div class="tab-pane fade" id="step2" role="tabpanel" aria-labelledby="step2-tab"><br>
                     <small id="emailHelp" class="form-text text-muted">Dados do Pagamento</small><br>
                     <div class="form-row">
+                        <input type="text" readonly id="lead_external_code" hidden>
                         <div class="col-2">
                             <label style="justify-content: left">Tipo de Pessoa</label> <span style="color: red">*</span>
                             <select class="form-control mb-2 mr-sm-2" id="payment_person_type" onchange="setDocumentType(this.value)">
